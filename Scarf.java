@@ -13,6 +13,8 @@ public class Scarf {
             return false;
         }
     }
+
+    // n - dlugosc szalika k - szerokosc
     public static String[] ScarfForm(int n,int k){
         int size = 2*k+1;
         int m = (n%(2*k-2));

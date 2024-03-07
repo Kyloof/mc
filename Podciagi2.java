@@ -6,86 +6,73 @@ public class Podciagi2 {
             return new int[0][0];
         }
         int lastNumber = 0;
-        int tabCount = 0;
         int[][] result = new int[numbers.length][];
+
+        int resultTabIndex = 0;
         int indexOfTab = 0;
         int[] tabPom = new int[numbers.length];
 
-        for (int i = 1; i < numbers.length; i++) {
-            if (numbers[i] >= numbers[i - 1]) {
-                tabPom[indexOfTab] = numbers[i-1];
-                tabPom[++indexOfTab] = numbers[i];
-                indexOfTab++;
+        if (numbers.length > 1) {
+            for (int i = 1; i < numbers.length; i++) {
+                if (numbers[i] >= numbers[i - 1]) {
+                    tabPom[indexOfTab] = numbers[i - 1];
+                    indexOfTab++;
+                    tabPom[indexOfTab] = numbers[i];
+
+                } else {
+                    tabPom[indexOfTab] = numbers[i - 1];
+                    indexOfTab++;
+                    //sprawdzam czy to juz jest ostatni element aby tez go uwzglednic
+
+                    result[resultTabIndex] = new int[indexOfTab];
+
+                    for (int k = 0; k < indexOfTab; k++) {
+                        result[resultTabIndex][k] = tabPom[k];
+                    }
+                    resultTabIndex++;
+
+                    if (i == numbers.length - 1 && numbers[i] != tabPom[indexOfTab - 1]) {
+                        result[resultTabIndex] = new int[1];
+                        result[resultTabIndex][0] = numbers[i];
+                        resultTabIndex++;
+                    }
+                    tabPom = new int[numbers.length];
+                    indexOfTab = 0;
+                }
             }
-            else if (numbers[i] < numbers[i - 1]){
-                tabPom[indexOfTab] = numbers[i-1];
-                for (int j = 0; j<tabPom.length;j++){
-                    if (tabPom[j] == 0 ){
-                        if (j==0 && tabPom[j]<=tabPom[j+1] && tabPom[j+1] != 0){
-                            tabCount++;
-                        }
-                        else if (j==tabPom.length-1 && lastNumber == tabPom[j-1] && tabPom[j-1]<=tabPom[j] && lastNumber!=0){
-                            tabCount++;
-                        }
-                        else if (j>0 && tabPom[j]>tabPom[j-1]){
-                            tabCount++;
-                        }
-                    }
-                    else{
-                        tabCount++;
-                    }
+        } else {
+            int[][] finalResult = new int[1][1];
+            finalResult[0][0] = numbers[0];
+            return finalResult;
+        }
+        int[][] finalResult = new int[resultTabIndex][];
+        int indexFinal = 0;
+        for (int[] list : result) {
+            if (list != null) {
+                finalResult[indexFinal] = new int[list.length];
+                for (int i = 0; i < list.length; i++) {
+                    finalResult[indexFinal][i] = list[i];
                 }
-
-                for
-
-                    indexOfTab+=1;
-                //sprawdzam czy to juz jest ostatni element aby tez go uwzglednic
-                if (i == numbers.length-1){
-                    result[indexOfTab][i] = numbers[i];
-                }
+                indexFinal++;
             }
         }
-        return result;
-
+        return finalResult;
     }
 
     public static void main(String[] args) {
-        int[] numbers = {0, 1, 2, 8, -3, -3, -4, 0, 7, 10, 0 };
+        int[] numbers = {0, 1, 2, 8, -3, -3, -4, 0, 7, 10, 0};
         int[][] result = longestNondecreasingSubstrings(numbers);
         int lastNumber = 0;
-        boolean isZero = false;
         for (int[] list : result) {
-            if (isZero){
-                break;
+            for (int element : list) {
+                System.out.print(element + " ");
             }
-            isZero=true;
             System.out.println();
-            for (int i = 0; i < list.length; i++) {
-                if (list[i] != 0)
-                    isZero = false;
-                if (list[i] == 0 ){
-                    if (i==0 && list[i]<=list[i+1] && list[i+1] != 0){
-                        System.out.print(list[i] + " ");
-                        lastNumber=list[i];
-                    }
-                    else if (i==list.length-1 && lastNumber == list[i-1] && list[i-1]<=list[i] && lastNumber!=0){
-                        System.out.print(list[i]);
-                        lastNumber=list[i];
-                    }
-                    else if (i>0 && list[i]>list[i-1]){
-                        System.out.print(list[i] + " ");
-                        lastNumber=list[i];
-                    }
-                }
-                else{
-                    System.out.print(list[i] + " ");
-                    lastNumber=list[i];
-                }
-
-
-            }
         }
+
+
     }
 }
+
 
 
